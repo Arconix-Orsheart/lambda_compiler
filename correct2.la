@@ -1,0 +1,53 @@
+-- File: correct2.la
+
+-- BMI Calculator
+
+
+
+def getBMI(weight: scalar, height: scalar) -> scalar:
+	bmi: scalar;
+
+	bmi = weight / (height ** 2);
+
+	return bmi;
+enddef; 
+
+
+
+def getBMIDetails(bmi: scalar):
+	write("BMI:\t%f\n", bmi);
+
+	writeStr("Grade:\t");
+
+	if(bmi < 18.5):
+		writeStr("Under");
+	else:
+		if(bmi < 25):
+			writeStr("Normal");
+		else:
+			if(bmi < 30):
+				writeStr("Over");
+			else:
+				if(bmi < 40):
+					writeStr("Obese");
+				else:
+					writeStr("Error");
+				endif;
+			endif;
+		endif;
+	endif;
+enddef;
+
+
+
+def main(): 
+	weight, height : scalar;
+	
+	weight = 57.4; -- kilograms
+	height = 1.73; -- meters
+
+	-- BMI: kg/m**2
+	const bmi = getBMI(weight, height) : scalar;
+
+	getBMIDetails(bmi);
+enddef;

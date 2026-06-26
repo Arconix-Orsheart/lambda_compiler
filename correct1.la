@@ -1,0 +1,97 @@
+-- File: correct1.la
+-- An evergrowing ArrayList
+
+
+
+@defmacro N 50
+
+
+
+comp ArrayList:
+	#data[]: integer;
+	#numOfData: integer;
+	#size: integer;
+
+	def insert(elem: integer):
+		if(#size == #numOfData):
+			#size *= #size;
+			#renewSize(#size);	
+		endif;
+
+		#data[#numOfData] = elem;
+		#numOfData += 1;
+		write("The element %d was inserted succesfully!\n", elem);
+	enddef;
+
+	def renewSize(newSize: integer):
+		newData := [x for x: type in #data of newSize] : integer;
+		#data = newData;
+
+		write("The new array size is: %d\n", newSize);
+	enddef;
+
+	def getIndexOf(elem: integer) -> integer:
+		for i in [0:#numOfData]:
+			if(#data[i] == elem):
+				write("The element %d was found succesfully at %d!\n", elem, i);
+				return i;
+			endif;
+		endfor;
+
+		write("The element %d was not found!\n", elem);
+		return -1;
+	enddef;
+
+	def delete(elem: integer):
+		index: integer;
+		index = #getIndexOf(elem);
+		
+		if(index != -1):
+			for i in [index:#numOfData - 1]:
+				#data[i] = #data[i + 1];
+			endfor;
+			#data[#numOfData - 1] = 0;
+			#numOfData -= 1;
+
+			write("The element %d was deleted succesfully!\n", elem);
+		endif;
+	enddef;
+endcomp;
+
+
+
+def createArrayList(initialSize: integer) -> ArrayList:
+	list: ArrayList;
+	list.#size = initialSize;
+
+	newData[initialSize]: integer;
+	list.#data = newData;
+	list.#numOfData = 0;
+
+	return list;
+enddef;
+
+
+
+def main(): 
+	list: ArrayList;
+	list = createArrayList(10);
+
+	const base = 2 : integer;
+
+	max: integer;
+	max = base * 10;
+
+
+	-- Succesful Insertion
+	data := [(base * i) % max for i:N] : integer;
+
+	for i in [1:N]:
+		list.insert(data[i]);
+	endfor;
+
+	-- Succesful Deletion
+	list.delete(2 * 2);
+	-- Unsuccesful Insertion
+	list.delete(2 + 3);
+enddef;
